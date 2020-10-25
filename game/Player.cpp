@@ -2765,6 +2765,7 @@ void idPlayer::SpawnFromSpawnSpot( void ) {
 	
 	if( !SelectSpawnPoint( spawn_origin, spawn_angles ) ) {
 		forceRespawn = true;
+
 		return;
 	}
 	SpawnToPoint( spawn_origin, spawn_angles );
@@ -14076,5 +14077,10 @@ int idPlayer::CanSelectWeapon(const char* weaponName)
 
 	return weaponNum;
 }
+/*
+===============
+idPlayer::GetFamilar
+===============
+*/
 
 // RITUAL END

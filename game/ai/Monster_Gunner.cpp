@@ -3,7 +3,6 @@
 #pragma hdrstop
 
 #include "../Game_local.h"
-
 class rvMonsterGunner : public idAI {
 public:
 

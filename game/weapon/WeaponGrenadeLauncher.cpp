@@ -147,6 +147,25 @@ stateResult_t rvWeaponGrenadeLauncher::State_Fire ( const stateParms_t& parms ) 
 			nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
 			Attack ( false, 1, spread, 0, 1.0f );
 			PlayAnim ( ANIMCHANNEL_ALL, GetFireAnim(), 0 );	
+			idPlayer* player;
+			player = gameLocal.GetLocalPlayer();
+			idDict                test;
+			float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
+			//When you fire your weapon a monster will poop out(pretend its a pet)
+			test.Set("classname", "monster_gunner");
+			test.Set("angle", va("%f", yaw + 180));
+
+
+			idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
+			test.Set("origin", org.ToString());
+
+			idEntity *pet = NULL;
+
+			gameLocal.SpawnEntityDef(test, &pet);
+
+			((idAI*)pet)->team = gameLocal.GetLocalPlayer()->team;
+			((idAI*)pet)->SetLeader(gameLocal.GetLocalPlayer());
+			((idAI*)pet)->aifl.undying = true;
 			return SRESULT_STAGE ( STAGE_WAIT );
 	
 		case STAGE_WAIT:		

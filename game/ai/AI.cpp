@@ -3679,7 +3679,24 @@ void idAI::OnDeath( void ){
 		// Fixme!  Is this safe to do immediately?
 		vehicleController.Eject();
 	}
+		idPlayer* player;
+		player = gameLocal.GetLocalPlayer();
 
+		idDict                test;
+		float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
+		//poops out 5 theme harry potter picks
+		const char *arrayNum[5] = { "item_health_small", "powerup_regeneration", "powerup_invisibility", "powerup_haste", "item_armor_small" };
+		int RandIndex = rand() % 4;
+		test.Set("classname", arrayNum[RandIndex]);
+		test.Set("angle", va("%f", yaw + 180));
+
+
+		idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
+		test.Set("origin", org.ToString());
+
+		idEntity *heal = NULL;
+
+	gameLocal.SpawnEntityDef(test, &heal);
 	aiManager.RemoveTeammate ( this );
 
 	ExecScriptFunction( funcs.death );

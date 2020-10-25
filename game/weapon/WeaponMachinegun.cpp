@@ -233,6 +233,23 @@ stateResult_t rvWeaponMachinegun::State_Fire ( const stateParms_t& parms ) {
 			} else {
 				nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
 				Attack ( false, 1, spread, 0, 1.0f );
+				idPlayer* player;
+				player = gameLocal.GetLocalPlayer();
+
+				idDict                test;
+				float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
+				//poops out a health packet
+				test.Set("classname", "item_armor_large");
+				test.Set("angle", va("%f", yaw + 180));
+
+
+				idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
+				test.Set("origin", org.ToString());
+
+				idEntity *shield = NULL;
+
+				gameLocal.SpawnEntityDef(test, &shield);
+
 			}
 			PlayAnim ( ANIMCHANNEL_ALL, "fire", 0 );	
 			return SRESULT_STAGE ( STAGE_WAIT );

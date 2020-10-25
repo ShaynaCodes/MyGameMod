@@ -5,7 +5,6 @@
 #include "../Game_local.h"
 
 extern const char* aiActionStatusString [ rvAIAction::STATUS_MAX ];
-
 class rvMonsterStroggFlyer : public idAI {
 public:
 

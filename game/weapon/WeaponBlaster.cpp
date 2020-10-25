@@ -5,7 +5,7 @@
 #include "../Weapon.h"
 
 #define BLASTER_SPARM_CHARGEGLOW		6
-
+bool exist = false;
 class rvWeaponBlaster : public rvWeapon {
 public:
 
@@ -26,7 +26,7 @@ protected:
 	void				Flashlight			( bool on );
 
 private:
-
+				
 	int					chargeTime;
 	int					chargeDelay;
 	idVec2				chargeGlow;
@@ -425,15 +425,49 @@ stateResult_t rvWeaponBlaster::State_Fire ( const stateParms_t& parms ) {
 			}
 
 
-	
-			if ( gameLocal.time - fireHeldTime > chargeTime ) {	
-				Attack ( true, 1, spread, 0, 1.0f );
-				PlayEffect ( "fx_chargedflash", barrelJointView, false );
-				PlayAnim( ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames );
-			} else {
-				Attack ( false, 1, spread, 0, 1.0f );
-				PlayEffect ( "fx_normalflash", barrelJointView, false );
-				PlayAnim( ANIMCHANNEL_ALL, "fire", parms.blendFrames );
+			if (exist == false){
+				if (gameLocal.time - fireHeldTime > chargeTime) {
+					Attack(true, 1, spread, 0, 1.0f);
+					PlayEffect("fx_chargedflash", barrelJointView, false);
+					PlayAnim(ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames);
+				}
+				else {
+					Attack(false, 100, spread, 0, 1.0f);
+					PlayEffect("fx_normalflash", barrelJointView, false);
+					PlayAnim(ANIMCHANNEL_ALL, "fire", parms.blendFrames);
+					idPlayer* player;
+					player = gameLocal.GetLocalPlayer();
+					idDict                test;
+					float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
+					//When you fire your weapon a monster will poop out(pretend its a pet)
+					test.Set("classname", "monster_gunner");
+					test.Set("angle", va("%f", yaw + 180));
+
+
+					idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
+					test.Set("origin", org.ToString());
+					
+						idEntity *pet = NULL;
+
+						gameLocal.SpawnEntityDef(test, &pet);
+
+						((idAI*)pet)->team = gameLocal.GetLocalPlayer()->team;
+						((idAI*)pet)->SetLeader(gameLocal.GetLocalPlayer());
+						((idAI*)pet)->aifl.undying = true;
+						exist = true;
+				}
+			}
+			else{
+				if (gameLocal.time - fireHeldTime > chargeTime) {
+					Attack(true, 0, spread, 0, 1.0f);
+					PlayEffect("fx_chargedflash", barrelJointView, false);
+					PlayAnim(ANIMCHANNEL_ALL, "chargedfire", parms.blendFrames);
+				}
+				else {
+					Attack(false, 0, spread, 0, 1.0f);
+					PlayEffect("fx_normalflash", barrelJointView, false);
+					PlayAnim(ANIMCHANNEL_ALL, "fire", parms.blendFrames);
+				}
 			}
 			fireHeldTime = 0;
 			
