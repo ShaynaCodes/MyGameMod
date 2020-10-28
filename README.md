@@ -19,5 +19,5 @@ Things that are changed
 4. Pet familiar(quake 4 monsters)
     this is the weapon blaster. Fire and familiar will appear
 5. Change enemies weapons to spells as well
-    their attacks are changed to either a fireball spell or they can clone themselves.
+    I made the enemies weapons(gauntlet,hyperblaster,railgun,napalmgun) more powerful and blast harder.This is considered a battle spell.
 
