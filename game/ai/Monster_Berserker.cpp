@@ -5,7 +5,7 @@
 #include "../Game_local.h"
 
 extern const char* aiActionStatusString [ rvAIAction::STATUS_MAX ];
-bool killed = false;
+
 class rvMonsterBerserker : public idAI {
 public:
 
@@ -362,7 +362,6 @@ stateResult_t rvMonsterBerserker::State_Torso_ChargeAttack ( const stateParms_t&
 		case TORSO_CHARGEATTACK_INIT:			
 			// Full body animations
 			DisableAnimState ( ANIMCHANNEL_LEGS );
-
 			// Play the ground strike
 			PlayAnim ( ANIMCHANNEL_TORSO, "ground_strike", parms.blendFrames );	
 			return SRESULT_STAGE ( TORSO_CHARGEATTACK_WAIT );
@@ -408,25 +407,6 @@ stateResult_t rvMonsterBerserker::State_Killed	( const stateParms_t& parms ) {
 	StopEffect ( "fx_charge_up" );
 	StopEffect ( "fx_ambient_electricity" );
 	StopEffect ( "fx_ambient_electricity_mace" );
-	killed = true;
-	if (killed == true){
-		idPlayer* player;
-		player = gameLocal.GetLocalPlayer();
-
-		idDict                test;
-		float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
-		//poops out a health packet
-		test.Set("classname", "item_health_small");
-		test.Set("angle", va("%f", yaw + 180));
-
-
-		idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
-		test.Set("origin", org.ToString());
-
-		idEntity *heal = NULL;
-
-		gameLocal.SpawnEntityDef(test, &heal);
-	}
 	return idAI::State_Killed ( parms );
 }
 

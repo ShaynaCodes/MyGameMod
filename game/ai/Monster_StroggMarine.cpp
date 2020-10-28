@@ -4,7 +4,7 @@
 
 #include "../Game_local.h"
 
-
+bool exist2 = false;
 //NOTE: actually a bit of a misnomer, as all Strogg Marine types use this class now...
 class rvMonsterStroggMarine : public idAI {
 public:
