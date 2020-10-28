@@ -649,7 +649,7 @@ stateResult_t rvWeaponNailgun::State_Fire( const stateParms_t& parms ) {
 				return SRESULT_DONE;
 			}
 			if ( DrumSpin ( NAILGUN_DRUMSPEED_FAST, 2 ) ) {
-				PostState ( "Fire", 2 );
+				PostState ( "Fire", 2);
 				return SRESULT_DONE;
 			}
 			nextAttackTime = gameLocal.time;
@@ -667,10 +667,10 @@ stateResult_t rvWeaponNailgun::State_Fire( const stateParms_t& parms ) {
 			}
 
 			if ( wsfl.zoom ) {				
-				Attack ( true, 1, spread, 0.0f, 1.0f );
+				Attack ( true, 10, spread, 0.0f, 1.0f );
 				nextAttackTime = gameLocal.time + (altFireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
 			} else {
-				Attack ( false, 1, spread, 0.0f, 1.0f );
+				Attack ( false, 10, spread, 0.0f, 1.0f );
 				nextAttackTime = gameLocal.time + (fireRate * owner->PowerUpModifier ( PMOD_FIRERATE ));
 			}
 			

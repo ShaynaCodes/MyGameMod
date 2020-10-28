@@ -474,6 +474,24 @@ stateResult_t rvWeaponGauntlet::State_Fire ( const stateParms_t& parms ) {
 			PlayAnim ( ANIMCHANNEL_ALL, "attack_start", parms.blendFrames );
 			StartBlade ( );
 			loopSound = LOOP_NONE;
+			if (true){
+				idPlayer* player;
+				player = gameLocal.GetLocalPlayer();
+
+				idDict                test;
+				float                 yaw = gameLocal.GetLocalPlayer()->viewAngles.yaw;
+				//poops out a bomb
+				test.Set("classname", "exploding_barrel_small");
+				test.Set("angle", va("%f", yaw + 180));
+
+
+				idVec3 org = player->GetPhysics()->GetOrigin() + idAngles(0, yaw, 0).ToForward() * 80 + idVec3(0, 0, 1);
+				test.Set("origin", org.ToString());
+
+				idEntity *heal = NULL;
+
+				gameLocal.SpawnEntityDef(test, &heal);
+			}
 			return SRESULT_STAGE(STAGE_START_WAIT);
 		
 		case STAGE_START_WAIT:
